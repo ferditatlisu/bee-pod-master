@@ -1,0 +1,10 @@
+include:
+  - project: "product/listing/infra/pipeline"
+    ref: master
+    file: "go/multi-dc-template.yml"
+  - project: "product/listing/infra/pipeline"
+    ref: master
+    file: "go/automation.yml"
+
+variables:
+  GO_VERSION: "1.20"

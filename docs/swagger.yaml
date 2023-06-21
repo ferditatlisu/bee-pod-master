@@ -1,0 +1,78 @@
+definitions:
+  dto.CopyRequest:
+    properties:
+      fromId:
+        type: integer
+      fromTopic:
+        type: string
+      key:
+        type: string
+      podName:
+        type: string
+      toId:
+        type: integer
+      toTopic:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /master:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: pod name
+        in: query
+        name: key
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+  /master/copy:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: CopyRequest
+        in: body
+        name: podBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.CopyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+  /master/getconfig:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+  /master/getenv:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+  /master/search:
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+swagger: "2.0"
