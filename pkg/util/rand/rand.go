@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-const charset = "abcdefghijklmnopqrstuvwxyz"
+const charset = "abcdefghijklmnopqrstuvwxyz1"
 
 var seededRand *rand.Rand = rand.New(
 	rand.NewSource(time.Now().UnixNano()))
