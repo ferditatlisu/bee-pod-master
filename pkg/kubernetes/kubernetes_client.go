@@ -156,6 +156,18 @@ func (ks *KubernetesService) SearchPodCreate(req *dto.SearchRequest) error {
 							Value: req.Value,
 						},
 						{
+							Name:  "START_DATE",
+							Value: strconv.FormatInt(req.StartDate, 10),
+						},
+						{
+							Name:  "END_DATE",
+							Value: strconv.FormatInt(req.EndDate, 10),
+						},
+						{
+							Name:  "VALUE_TYPE",
+							Value: strconv.Itoa(req.ValueType),
+						},
+						{
 							Name:  "KAFKA_CONFIGS",
 							Value: os.Getenv("KAFKA_CONFIGS"),
 						},

@@ -11,6 +11,9 @@ type SearchRequest struct {
 	PodName     string `json:"podName"`
 	Key         string `json:"key"`
 	MetadataKey string `json:"metadataKey"`
+	StartDate   int64  `json:"startDate"`
+	EndDate     int64  `json:"endDate"`
+	ValueType   int    `json:"valueType"`
 }
 
 func (r *SearchRequest) UpdateSearchRequest() {
