@@ -36,6 +36,7 @@ func (s *ginServer) SetupRouter(es MasterController) *gin.Engine {
 	s.router.GET("/master/getenv", es.GetEnv())
 	s.router.GET("/master/getconfig", es.GetConfig())
 	s.router.POST("/master/search", es.Search())
+	s.router.POST("/master/partition", es.Partition())
 	s.router.DELETE("/master", es.Delete())
 	s.router.GET("/_monitoring/health", func(context *gin.Context) {
 		context.JSON(http.StatusOK, "OK")

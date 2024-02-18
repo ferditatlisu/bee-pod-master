@@ -209,6 +209,85 @@ func (ks *KubernetesService) SearchPodCreate(req *dto.SearchRequest) error {
 	return nil
 }
 
+func (ks *KubernetesService) PartitionPodCreate(req *dto.PartitionRequest) error {
+	p := &v1.Pod{
+		ObjectMeta: metav1.ObjectMeta{Name: req.PodName, Labels: map[string]string{"app": "partition"}},
+		Spec: v1.PodSpec{
+			ServiceAccountName: ks.appConfig.ServiceAccountName,
+			Containers: []v1.Container{
+				{
+					Name:  "bee-partition",
+					Image: ks.appConfig.CopyImage,
+					Ports: []v1.ContainerPort{
+						{ContainerPort: 8080},
+					},
+					Env: []v1.EnvVar{
+						{
+							Name:  "KEY",
+							Value: req.Key,
+						},
+						{
+							Name:  "POD_NAME",
+							Value: req.PodName,
+						},
+						{
+							Name:  "TOPIC",
+							Value: req.Topic,
+						},
+						{
+							Name:  "CLUSTER_ID",
+							Value: strconv.Itoa(req.ClusterId),
+						},
+						{
+							Name:  "GROUP_ID",
+							Value: req.GroupId,
+						},
+						{
+							Name:  "PARTITIONS",
+							Value: req.GetPartitions(),
+						},
+						{
+							Name:  "KAFKA_CONFIGS",
+							Value: os.Getenv("KAFKA_CONFIGS"),
+						},
+						{
+							Name:  "ENVIRONMENT",
+							Value: os.Getenv("ENVIRONMENT"),
+						},
+						{
+							Name:  "REDIS_HOST",
+							Value: os.Getenv("REDIS_HOST"),
+						},
+						{
+							Name:  "REDIS_PASSWORD",
+							Value: os.Getenv("REDIS_PASSWORD"),
+						},
+						{
+							Name:  "REDIS_MASTERNAME",
+							Value: os.Getenv("REDIS_MASTERNAME"),
+						},
+						{
+							Name:  "REDIS_DB",
+							Value: os.Getenv("REDIS_DB"),
+						},
+						{
+							Name:  "POD_MASTER_URL",
+							Value: os.Getenv("POD_MASTER_URL"),
+						},
+					},
+				},
+			},
+		},
+	}
+
+	err := ks.CreatePod(p)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (ks *KubernetesService) CreatePod(p *v1.Pod) error {
 	if ks.client == nil {
 		return errors.New("couldn't connect to k8s")

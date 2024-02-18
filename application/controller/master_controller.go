@@ -20,6 +20,7 @@ type masterController struct {
 type MasterController interface {
 	Copy() gin.HandlerFunc
 	Search() gin.HandlerFunc
+	Partition() gin.HandlerFunc
 	Delete() gin.HandlerFunc
 	GetConfig() gin.HandlerFunc
 	GetEnv() gin.HandlerFunc
@@ -57,6 +58,7 @@ func (m *masterController) Copy() gin.HandlerFunc {
 // @Accept json
 // @Produce json
 // @Success 200
+// @Param 	podBody body 	dto.SearchRequest 	true 	"SearchRequest"
 // @Router /master/search [post]
 func (m *masterController) Search() gin.HandlerFunc {
 	return func(context *gin.Context) {
@@ -68,6 +70,31 @@ func (m *masterController) Search() gin.HandlerFunc {
 
 		searchReq.UpdateSearchRequest()
 		err = m.ms.Search(searchReq)
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		context.JSON(http.StatusOK, "OK")
+	}
+}
+
+// Search  @Tags pod-master-controller
+// @Accept json
+// @Produce json
+// @Success 200
+// @Param 	podBody body 	dto.PartitionRequest 	true 	"PartitionRequest"
+// @Router /master/partition [post]
+func (m *masterController) Partition() gin.HandlerFunc {
+	return func(context *gin.Context) {
+		req, err := GetRequestBody[dto.PartitionRequest](context)
+		if err != nil {
+			context.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+
+		req.UpdateRequest()
+		err = m.ms.Partition(req)
 		if err != nil {
 			context.JSON(http.StatusInternalServerError, err.Error())
 			return

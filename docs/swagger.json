@@ -84,6 +84,32 @@
                 }
             }
         },
+        "/master/partition": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "PartitionRequest",
+                        "name": "podBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.PartitionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
         "/master/search": {
             "post": {
                 "consumes": [
@@ -91,6 +117,17 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "SearchRequest",
+                        "name": "podBody",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SearchRequest"
+                        }
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -121,6 +158,64 @@
                 },
                 "toTopic": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.PartitionRequest": {
+            "type": "object",
+            "properties": {
+                "clusterId": {
+                    "type": "integer"
+                },
+                "groupId": {
+                    "type": "string"
+                },
+                "ignoredPartitions": {
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
+                },
+                "key": {
+                    "type": "string"
+                },
+                "podName": {
+                    "type": "string"
+                },
+                "topic": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SearchRequest": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "integer"
+                },
+                "kafkaId": {
+                    "type": "integer"
+                },
+                "key": {
+                    "type": "string"
+                },
+                "metadataKey": {
+                    "type": "string"
+                },
+                "podName": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "integer"
+                },
+                "topic": {
+                    "type": "string"
+                },
+                "value": {
+                    "type": "string"
+                },
+                "valueType": {
+                    "type": "integer"
                 }
             }
         }

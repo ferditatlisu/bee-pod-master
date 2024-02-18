@@ -16,6 +16,7 @@ type masterService struct {
 type MasterService interface {
 	Copy(r *dto.CopyRequest) error
 	Search(r *dto.SearchRequest) error
+	Partition(r *dto.PartitionRequest) error
 	Delete(podName string) error
 }
 
@@ -53,6 +54,21 @@ func (ms *masterService) Search(req *dto.SearchRequest) error {
 	err = ms.ks.SearchPodCreate(req)
 	if err != nil {
 		ms.redis.Delete(req.MetadataKey)
+	}
+
+	return err
+}
+
+func (ms *masterService) Partition(req *dto.PartitionRequest) error {
+	err := ms.redis.RequestedCopyEvent(req.Key, req.PodName)
+	if err != nil {
+		logger.Logger().Error("Redis throw error. ", zap.Error(err))
+		return err
+	}
+
+	err = ms.ks.PartitionPodCreate(req)
+	if err != nil {
+		ms.redis.Delete(req.Key)
 	}
 
 	return err

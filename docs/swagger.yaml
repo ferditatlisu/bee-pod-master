@@ -14,6 +14,44 @@ definitions:
       toTopic:
         type: string
     type: object
+  dto.PartitionRequest:
+    properties:
+      clusterId:
+        type: integer
+      groupId:
+        type: string
+      ignoredPartitions:
+        items:
+          type: integer
+        type: array
+      key:
+        type: string
+      podName:
+        type: string
+      topic:
+        type: string
+    type: object
+  dto.SearchRequest:
+    properties:
+      endDate:
+        type: integer
+      kafkaId:
+        type: integer
+      key:
+        type: string
+      metadataKey:
+        type: string
+      podName:
+        type: string
+      startDate:
+        type: integer
+      topic:
+        type: string
+      value:
+        type: string
+      valueType:
+        type: integer
+    type: object
 info:
   contact: {}
 paths:
@@ -66,10 +104,33 @@ paths:
       responses:
         "200":
           description: OK
+  /master/partition:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: PartitionRequest
+        in: body
+        name: podBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.PartitionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
   /master/search:
     post:
       consumes:
       - application/json
+      parameters:
+      - description: SearchRequest
+        in: body
+        name: podBody
+        required: true
+        schema:
+          $ref: '#/definitions/dto.SearchRequest'
       produces:
       - application/json
       responses:
