@@ -217,7 +217,7 @@ func (ks *KubernetesService) PartitionPodCreate(req *dto.PartitionRequest) error
 			Containers: []v1.Container{
 				{
 					Name:  "bee-partition",
-					Image: ks.appConfig.CopyImage,
+					Image: ks.appConfig.PartitionImage,
 					Ports: []v1.ContainerPort{
 						{ContainerPort: 8080},
 					},

@@ -9,6 +9,7 @@ import (
 type ApplicationConfig struct {
 	Redis              RedisConfig
 	CopyImage          string
+	PartitionImage     string
 	SearchImage        string
 	ServiceAccountName string
 	Namespace          string
@@ -41,6 +42,7 @@ func NewApplicationConfig() (*ApplicationConfig, error) {
 	configuration.Namespace = os.Getenv("NAMESPACE")
 	configuration.SearchImage = os.Getenv("SEARCH_IMAGE")
 	configuration.CopyImage = os.Getenv("COPY_IMAGE")
+	configuration.PartitionImage = os.Getenv("PARTITION_IMAGE")
 	configuration.ServiceAccountName = os.Getenv("SERVICE_ACCOUNT_NAME")
 
 	configuration.Redis.Host = strings.Split(os.Getenv("REDIS_HOST"), ",")
