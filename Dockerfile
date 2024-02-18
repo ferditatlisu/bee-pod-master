@@ -4,7 +4,6 @@ WORKDIR /app
 COPY go.mod .
 COPY go.sum .
 RUN go mod download
-RUN go get github.com/vektra/mockery/.../
 #Adding changed files last for hitting docker layer cache
 COPY . .
 RUN go generate ./...
